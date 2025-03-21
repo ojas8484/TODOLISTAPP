@@ -29,12 +29,18 @@ export default function Todo() {
     setTodoListItem(todolistItem.filter((todo) => todo.id !== id));
   };
 
+  const toggleCompletion = (id) => {
+    setTodoListItem(
+      todolistItem.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+  };
+
   return (
     <>
       <div className="flex flex-col items-center mt-10 space-y-6">
-        <h1 className="text-2xl font-bold text-gray-900">
-          Todo List
-        </h1>
+        <h1 className="text-2xl font-bold text-gray-900">Todo List</h1>
         <div className="flex flex-row items-center space-x-3">
           <input
             className="border border-gray-400 rounded-lg px-4 py-2 w-72 focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-sm"
@@ -63,9 +69,19 @@ export default function Todo() {
               {todolistItem.map((todo) => (
                 <tr key={todo.id} className="border border-gray-300 text-center">
                   <td className="border border-gray-300 px-6 py-2">
-                    <input type="checkbox" checked={todo.completed} readOnly />
+                    <input
+                      type="checkbox"
+                      checked={todo.completed}
+                      onChange={() => toggleCompletion(todo.id)}
+                    />
                   </td>
-                  <td className="border border-gray-300 px-6 py-2">{todo.title}</td>
+                  <td
+                    className={`border border-gray-300 px-6 py-2 ${
+                      todo.completed ? "line-through text-gray-500" : ""
+                    }`}
+                  >
+                    {todo.title}
+                  </td>
                   <td className="border border-gray-300 px-6 py-2">
                     <button
                       onClick={() => deleteListItem(todo.id)}
